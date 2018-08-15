@@ -8,7 +8,7 @@
 <h1>Welcome to the blog</h1>
 <div class="wrapper">
     <form th:action="@{blog}" th:object="${posts}" method="post">
-        <textarea rows="25" cols="150" placeholder="Write om your dog häre..." th:field="*{posts}">
+        <textarea rows="25" cols="150" placeholder="Write om your dog häre..." th:field="*{Blogposts}">
         </textarea>
         <input type="submit">
     </form>

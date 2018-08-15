@@ -15,15 +15,15 @@ public class Posts {
     private int postID;
     @NotEmpty
     @NotNull
-    private String posts;
+    private String Blogposts;
 
     public Posts(){
 
     }
 
-    public Posts(int userID, String posts) {
+    public Posts(int userID, String Blogposts) {
         this.userID = userID;
-        this.posts = posts;
+        this.Blogposts = Blogposts;
     }
 
     public int getUserID() {
@@ -42,11 +42,11 @@ public class Posts {
         this.postID = postID;
     }
 
-    public String getPosts() {
-        return posts;
+    public String getBlogposts() {
+        return Blogposts;
     }
 
-    public void setPosts(String posts) {
-        this.posts = posts;
+    public void setBlogposts(String blogposts) {
+        this.Blogposts = blogposts;
     }
 }

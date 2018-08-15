@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 public class UserController {
@@ -19,6 +18,8 @@ public class UserController {
 
     @Autowired
     private BlogRepository blogRepository;
+
+    private int userId;
 
     @GetMapping("/register")
     public String getReg(Users user){
@@ -50,7 +51,7 @@ public class UserController {
         }
 
         Users users = userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
-
+        this.userId = users.getUserID();
         if (users != null) {
             HttpSession session = request.getSession(true);
             session.setAttribute("LoggedIn", true);
@@ -67,11 +68,14 @@ public class UserController {
     }
 
     @PostMapping("/blog")
-    public String postBlog(Posts post, HttpServletRequest request) {
-        HttpSession session= request.getSession(true);
-        int userID = (int)session.getAttribute("userID");
+    public String postBlog(@Valid Posts posts, HttpServletRequest request) {
 
-        blogRepository.save(new Posts(userID,post.getPosts()));
-        return "blog";
+        HttpSession session = request.getSession(true);
+        if(session.getAttribute("LoggedIn") != null){
+
+            blogRepository.save(new Posts(this.userId,posts.getBlogposts()));
+            return "blog";
+        }
+        return "index";
     }
 }
