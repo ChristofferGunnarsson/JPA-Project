@@ -2,6 +2,7 @@ package com.example.blogg;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -20,6 +22,14 @@ public class UserController {
     private BlogRepository blogRepository;
 
     private int userId;
+
+    @GetMapping("/")
+    public String getIndex(Model model){
+
+        List<Posts> blogposts = (List<Posts>) blogRepository.findAll();
+        model.addAttribute("blogposts", blogposts);
+        return "index";
+    }
 
     @GetMapping("/register")
     public String getReg(Users user){

@@ -11,8 +11,20 @@
 
 <div class="wrapper">
     <ul>
-        <li th:each="post : ${blogposts}" th:text="${post.getPosts}"></li>
+        <li th:each="post : ${blogposts}" th:text="${post.getBlogposts()}"></li>
     </ul>
+
+</div>
+
+<div class="pagination">
+    <a href="#">&laquo;</a>
+    <a href="#">1</a>
+    <a href="#">2</a>
+    <a href="#">3</a>
+    <a href="#">4</a>
+    <a href="#">5</a>
+    <a href="#">6</a>
+    <a href="#">&raquo;</a>
 </div>
 
 </body>
