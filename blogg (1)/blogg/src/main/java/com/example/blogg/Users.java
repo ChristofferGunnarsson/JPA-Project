@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Users {
@@ -12,7 +13,11 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userID;
+    @NotEmpty
+    @NotNull
     private String username;
+    @NotEmpty
+    @NotNull
     private String password;
 
     public Users(){

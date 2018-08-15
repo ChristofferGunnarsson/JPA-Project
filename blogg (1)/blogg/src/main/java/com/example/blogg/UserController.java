@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -17,41 +18,46 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping("/register")
-    public String reg(HttpServletRequest request){
-
-        HttpSession session = request.getSession(true);
-        session.setAttribute("LoggedIn", true);
-
-
+    public String getReg(Users user){
         return "register";
-
     }
 
+    @PostMapping("/register")
+    public String postReg(Users user, HttpServletRequest request){
+
+        Users users = userRepository.findByUsername(user.getUsername());
+        if (users == null) {
+            userRepository.save(new Users(user.getUsername(), user.getPassword()));
+        }
+
+        return "register";
+    }
 
     @GetMapping("/login")
     public String getLogin(Users user){
-
         return "login";
     }
 
 
     @PostMapping("/login")
-    public String login(Users user, HttpServletRequest request, BindingResult bindingResult){
+    public String login(@Valid Users user, HttpServletRequest request, BindingResult bindingResult){
 
-        HttpSession session = request.getSession(true);
-        session.setAttribute("LoggedIn", true);
         if(bindingResult.hasErrors()){
             return "login";
         }
 
-        /*
-        userRepository.findByUsername(user.getUsername());
-        userRepository.findByPassword(user.getPassword());
-        */
-
         Users users = userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
 
-        System.out.println(users.getUserID() + " - " + users.getUsername() + " - " + users.getPassword());
+        if (users != null) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("LoggedIn", true);
+            return "redirect:blog";
+        }
         return "login";
+    }
+
+    @GetMapping("/blog")
+    public String getBlog() {
+        return "blog";
     }
 }
