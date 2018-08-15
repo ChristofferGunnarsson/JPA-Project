@@ -17,6 +17,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BlogRepository blogRepository;
+
     @GetMapping("/register")
     public String getReg(Users user){
         return "register";
@@ -51,13 +54,24 @@ public class UserController {
         if (users != null) {
             HttpSession session = request.getSession(true);
             session.setAttribute("LoggedIn", true);
+            session.setAttribute("userID", user.getUserID());
             return "redirect:blog";
         }
         return "login";
     }
 
     @GetMapping("/blog")
-    public String getBlog() {
+    public String getBlog(Posts post) {
+
+        return "blog";
+    }
+
+    @PostMapping("/blog")
+    public String postBlog(Posts post, HttpServletRequest request) {
+        HttpSession session= request.getSession(true);
+        int userID = (int)session.getAttribute("userID");
+
+        blogRepository.save(new Posts(userID,post.getPosts()));
         return "blog";
     }
 }
